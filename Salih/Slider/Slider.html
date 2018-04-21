@@ -1,0 +1,177 @@
+<html>
+<style>
+* {box-sizing:border-box}
+
+.slideshow-container {
+  width: 300px;
+  height: 250px;
+  position: relative;
+  margin: auto;
+  display:inline-block;
+}
+
+.mySlides {
+    display: none;
+}
+
+.prev, .next {
+
+  position: relative;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: black;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 0 3px 3px 0;
+}
+
+.next {
+  border-radius: 3px 0 0 3px;
+}
+.prev {
+  border-radius: 3px 0 0 3px;
+}
+
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+.block {
+ 
+    width: 150px;
+    height: 125px;
+    margin: -2px;
+    background-color: #34495e;
+    background-repeat: no-repeat;
+    display: inline-block;
+    position: relative;
+    background-image: url("pic2.gif");
+}
+
+.block1 {
+
+    background-position: 0px 0px;
+       
+}
+
+.block2 {
+    background-position: -150px 0px;
+
+}
+.block3 {
+
+    background-position: 0px -125px;
+
+}
+
+.block4 {
+    background-position: -150px -125px;
+
+}
+}
+
+</style>
+ <body> <center>
+<div class="slideshow-container">
+
+  <div class="mySlides fade">
+     <div class="block block1" id="b1"></div>
+    <div class="block block2" id="b2"></div>
+    <div class="block block3" id="b3"></div>
+    <div class="block block4" id="b4"></div>
+    <div class="text">Первый слайд</div>
+  </div>
+
+  <div class="mySlides fade" >
+    <div class="block block1" id="b1"></div>
+    <div class="block block2" id="b2"></div>
+    <div class="block block3" id="b3"></div>
+    <div class="block block4" id="b4"></div>
+    <div class="text">Второй слайд</div>
+  </div>
+   <div class="mySlides fade" >
+    <div class="block block1" id="b1"></div>
+    <div class="block block2" id="b2"></div>
+    <div class="block block3" id="b3"></div>
+    <div class="block block4" id="b4"></div>
+    <div class="text">Третий слайд</div>
+  </div>
+</div>
+</div>
+
+<br>
+  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+  <a class="next" onclick="plusSlides(1)">&#10095;</a>
+</center>
+</body>
+ <script>
+  var Pic = new Array()
+  var img = new Array()
+  Pic[0] = 'pic2.gif'
+  Pic[1] = 'pic4.gif'
+  Pic[2] = 'pic1.gif'
+  var slideIndex = 1;
+  var old=0;
+showSlidesFirst(slideIndex)
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var img1 = document.getElementsByClassName("block1");
+  var img2 = document.getElementsByClassName("block2");
+  var img3 = document.getElementsByClassName("block3");
+  var img4 = document.getElementsByClassName("block4");
+  if (n > slides.length) {slideIndex = 1} 
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none"; 
+      img1[i].style.backgroundImage = 'url('+Pic[old]+')';
+      img2[i].style.backgroundImage = 'url('+Pic[old]+')';
+      img3[i].style.backgroundImage = 'url('+Pic[old]+')';
+      img4[i].style.backgroundImage = 'url('+Pic[old]+')';
+  }
+  console.log(old)
+  slides[slideIndex-1].style.display = "block"; 
+  Move(slideIndex-1,img1,img2,img3,img4);
+}
+ function Move(n,im1,im2,im3,im4){
+  console.log(n)
+  var timer = 30
+    im1[n].style.backgroundImage = 'url('+Pic[n]+')';
+     setTimeout(function(){
+    im2[n].style.backgroundImage = 'url('+Pic[n]+')';
+     },30)
+     setTimeout(function(){
+    im3[n].style.backgroundImage = 'url('+Pic[n]+')';
+     },60)
+     setTimeout(function(){
+    im4[n].style.backgroundImage = 'url('+Pic[n]+')';
+     },90)
+     old=n
+    }
+  function showSlidesFirst(n) {
+  var i;
+  console.log(n)
+  var slides = document.getElementsByClassName("mySlides");
+  if (n > slides.length) {slideIndex = 1} 
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none"; 
+  }
+  slides[slideIndex-1].style.display = "block"; 
+}
+</script>
+</html>
