@@ -1,0 +1,16 @@
+<!Doctype html>
+
+<div id="nav">
+	<ul type="disk"<%if(name != undefined){%> style="width: 852px;" <%}%>><li><a href="Index">Home</a></li>
+		<li><a href="About_Parallax" >About Parallax</a></li>
+		<li><a href="Parallax-way" >The Parallax Way</a></li>
+		<li><a href="Energy" >Energy Holdings</a></li>
+		<% if(name== undefined) {%> 
+		<li><a href = 'login'>Login</a></li>
+		<%}
+		else {%>
+		<li><a href="logout">Logout</a></li>
+		<li><a id = 'showLi'>ShowList</a></li> 
+		<%}%>
+	</ul>
+</div>

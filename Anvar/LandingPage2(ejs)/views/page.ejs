@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>
+		Node JS
+	</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<link rel="stylesheet" href = "/static/styles.css"></link>
+</head>
+<body>
+<div style="width: 100%; height: 100%;">
+	<div id="wrapper">
+		<div id="auth">
+			<p style="color: red; font-size: 20px;" id="valid"></p>
+			<h3>GET STARTED</h3>
+			<form name ="myform" method="post">
+				<input class = "pan" autocomplete="off" type="text" placeholder = "Your name" id="name">
+				<input class = "pan" autocomplete="off" type="text" placeholder= "Email adress" id="email">
+				<button class = "pan" id ="submit_btn">Отправить</button>
+				<p style="font-size: 15px;">We won't share your adress</p>
+			</form>
+		</div>
+		<div id= "cont">
+			<h3>BACKYARD</h3>
+			<h2>Beautiful High Converting Landing Page</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			
+			<button class = "btn" name="btn1">Features</button>
+			<button class = "btn" name="btn2">Download</button> 
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src = "/static/javas.js">
+</script>
+
+<script>
+$('#submit_btn').on('click',(e)=>{
+    e.preventDefault();
+
+    var name = document.getElementById("name").value;
+	var email = document.getElementById("email").value; 
+	
+	if(name.length > 0 && email.length>0)
+	{
+		if(/^[\w\.\d-_]+@[\w\.\d-_]+\.\w{2,4}$/i.test(email))
+		{
+			//Отправка post
+			ajaxPost("name=" + name + "&&email="+email);
+		}
+		else
+		{
+			document.getElementById("valid").innerHTML = 'Неверный email!';
+		}
+	}
+	else
+	{
+		document.getElementById("valid").innerHTML = 'Пожалуйста, заполните все поля!';
+	}
+});
+
+function ajaxPost(params)
+{
+	console.log(params);
+	var req = new XMLHttpRequest();
+
+	req.onreadystatechange = function(){
+		if(req.readyState == 4 && req.status == 200)
+		{
+			if(req.responseText == 'Аутентификация пройдена!')
+			{
+				document.getElementById("valid").style.color = 'green';
+			}
+			document.getElementById("valid").innerHTML = req.responseText;
+			document.getElementById("name").value = "";
+			document.getElementById("email").value = "";
+		}
+	}
+
+	req.open('POST','/LandingPage');
+	req.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+	req.send(params);
+
+}
+    
+</script>
+
+</body>
+</html>
