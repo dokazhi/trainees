@@ -1,0 +1,377 @@
+body{
+	margin 0;
+	background-image: url('./nav/bg.jpg');
+}
+.head{
+	color: lightgray;
+	margin-top: -1px;
+	font-size: 30px;
+}
+
+/*-----------------header----------------------*/
+header{
+	position: fixed;
+	z-index: 20;
+	margin: 0;
+	text-align: center;
+	background-image: url('./nav/BACK.jpg');
+	height: 40px;
+	width: 100%;
+	margin-bottom: 20px;
+	border-bottom: 2px solid black;
+	border-left: 2px solid black;
+	border-right: 2px solid black;
+	border-bottom-right-radius: 15px;
+	border-bottom-left-radius: 15px;
+	margin-top: -50px;
+	margin-left: -10px;
+}
+
+/*-------------for Authorithation and Registration----------------*/
+#wrapper{
+	border: 2px solid black;
+	padding: 20px;
+	padding-top: 10px;
+	height: wrap-content;
+	width: 400px;
+	background-image: url('./nav/BACK.jpg');
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 20px;
+	padding-bottom: 30px; 
+}
+
+#RegForm{
+	margin-left: 20px;
+}
+
+#title{
+	margin-left: 20px;
+	font-size: 30px;
+	color: white;
+	font-family: helvetica;
+}
+
+#errorMes{
+	margin-top: -20px;
+	margin-left: 30px;
+	color: red;
+	font-size: 15px;
+	font-family: helvetica;
+}
+
+.formEl{
+	width: 300px;
+    height: 40px;
+    margin-left: 20px;
+    margin-bottom: 15px;
+    display: block;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.inp
+{ 
+    padding-left: 20px;
+}
+
+.btn{
+	width: 325px;
+	background: Silver;
+}
+
+.inp:focus
+{
+	background: Silver;
+}
+
+/*---------for scroll-------------*/
+::-webkit-scrollbar{
+    width:12px;
+    margin-right:10px;
+    padding-right: 10px; 
+}
+::-webkit-scrollbar-thumb{
+    border-width:1px 1px 1px 1px;
+    border-color: #777;
+    background-color: #aaa;
+    border-radius: 50px;
+}
+::-webkit-scrollbar-thumb:hover{
+    border-width: 1px 1px 1px 1px;
+    border-color: #555;
+    background-color: #777;
+}
+::-webkit-scrollbar-track{
+    border-width:0;
+}
+
+
+/*----------------for BigChat-------------------*/
+.icon
+{
+	width: 30px;
+	height: 30px;
+	border-radius: 15px;
+	margin-bottom: -8px;
+	cursor: pointer;
+}
+.status
+{
+	width: 10px;
+	height: 10px;
+	margin-left: 3px;
+/*	margin-bottom: 2px;*/
+}
+#chatWrap
+{
+	width: 800px;
+	height: wrap-content;
+	padding: 30px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 50px;
+	border: 2px solid black;
+	border-radius: 20px;
+	background-image: url('./nav/BACK.jpg');
+	position: relative;
+}
+
+#msgContainer
+{
+	width: 700px;
+	position: relative;
+	bottom: 0;
+	list-style: none;
+}
+
+.msgLi
+{
+	background: silver;
+	width: 100%;
+	padding: 5px;
+	border: 1px solid white;
+	margin-top: 5px;
+	border-radius: 5px;
+	font-size: 16px;
+	font-family: sans-serif;
+	color: black;
+}
+
+#mesContainer
+{
+	width: 900px;
+	margin-left: 40px;
+	position: relative;
+}
+
+#message
+{
+	width: 690px;
+	height: 100px;
+	display: block;
+	padding: 10px;
+	border-radius: 10px;
+	/*color: blue;*/
+	font-size: 20px;
+}
+
+#sendMes
+{
+	margin-top: 5px;
+	width: 200px;
+	height: 30px;
+	border-radius: 10px;
+	font-size: 18px;
+	margin-left: 500px;
+}
+
+.nameMsg
+{
+	cursor: pointer;
+}
+
+.nameMsg:hover
+{
+	color: white;
+}
+
+.myMsg
+{
+	cursor: pointer;
+	color: red;
+}
+.myMsg:hover
+{
+	color: white;
+}
+.msg
+{
+	margin-top: 2px;
+	margin-left: 35px;
+	margin-bottom: 2px;
+	color: darkblue;
+	font-size: 17px;
+}
+
+.date
+{
+	margin-left: 570px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-size: 14px;
+	/*font-style: oblique;*/
+}
+
+/*--------------------For PopUp------------------------*/
+
+#backpop
+{
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+}
+
+#popup
+{
+	position: relative;
+	z-index: 3;
+	width: 400px;
+	height: 350px;
+	margin-top: 80px;
+	margin-left: auto;
+	margin-right: auto;
+	background-image: url('./nav/BACK.jpg');
+	border: 2px solid white;
+	border-radius: 20px;
+	padding-left: 40px;
+}
+.photo
+{
+	margin-left: 55px;
+	width: 250px;
+	height: 250px;
+	border-radius: 10px;
+}
+
+#closePNG
+{
+	width: 15px;
+	height: 15px;
+	position: absolute;
+	cursor: pointer;
+	margin-left: 370px;
+	margin-top: 10px;
+}
+
+#popName
+{
+	display: inline-block;
+}
+
+.goto
+{
+	margin-left: 20px;
+	display: inline;
+	font-style: oblique;
+	font-size: 15px;
+	border-bottom: 1px solid black;
+}
+.goto:hover
+{
+	cursor: pointer;
+	color: white;
+	border-bottom: 0;
+}
+
+
+/*---------------------------Navigation Panel---------------------------*/
+.nav{
+	width: 50px;
+	height: wrap;
+	float: left;
+	position: fixed;
+	background:  darkgray;
+	z-index: 20;
+	border: 2px solid black;
+	border-radius: 15px;
+	margin-left: 10px;
+	margin-top: 50px;
+	text-align: center;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.navIm
+{
+	cursor: pointer;
+	margin-top: 5px; 
+	border-radius: 15px;
+	width: 40px;
+	height: 40px;
+}
+
+/*----------------------------------For List--------------------------------*/
+
+.list_wrap
+{
+	width: 480px;
+	height: wrap;
+	background-image: url('./nav/BACK.jpg');
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 50px;
+	border: 2px solid black;
+	border-radius: 15px;
+	padding: 30px;
+}
+
+.ListPhoto
+{
+	height: 60px;
+	width: 60px;
+	border-radius: 20px;
+	margin-right: 10px;
+}
+
+.pwrite
+{
+	text-decoration: none;
+	font-style: oblique;
+	font-size: 20px;
+	cursor: pointer;
+	margin-left: 10px;
+	color: black;
+}
+
+.pwrite:hover
+{
+	color: white;
+}
+
+.statOff
+{
+	color: red;
+	margin-left: 20px;
+}
+
+.statOn
+{
+	color: chartreuse;
+	margin-left: 20px;
+}
+
+/*-----------------------MyPage----------------------------*/
+.MyLogin
+{
+	margin-left: 50px;
+	margin-top: 0px;
+	margin-bottom: 5px;
+	font-size: 30px;
+}
+.newPhoto
+{
+	margin-left: 55px; 
+	background: green;
+}

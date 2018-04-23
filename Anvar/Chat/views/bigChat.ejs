@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		BigChat | <%=name%> 
+	</title>
+	<link rel="stylesheet" type="text/css" href="static/styles.css">
+</head>
+<body>
+	<header><h1 class='head'>Общий чат</h1></header>
+	<div id="id" style="display: none"><%=name%></div>
+	<%-partial('./layout/navigationPanel.ejs')%>
+	<script>
+		if(top.location.href != 'http://localhost:3000/BigChat') top.location.href = '/BigChat';
+	</script>
+	<div id = 'backpop' style="display: none">
+		<div id ='popup'>
+			<img id='closePNG' src="/static/nav/close.png">
+			<div>
+				<h2 id = 'popName'></h2>
+				<a id = 'goto' class='goto'>Перейти к диалогу</a>
+			</div>
+			<img class ="photo" src="/static/photo/default.png" >
+		</div>
+	</div>
+	<div id ='chatWrap'>
+		<div>
+			<ul id='msgContainer'>
+				<%for(var i = chat.length - 1; i >= 0 ; i--) {%>
+					<li class = 'msgLi'><img class ='icon' src="<%=chat[i].path%>">
+						<%if(chat[i].login == name){%><strong class = 'myMsg nameMsg'><%=chat[i].login%><img class="status" style="display: inline-block" src="static/nav/green.png"></strong><br>
+						<%}
+						else{%>
+						<strong class = 'nameMsg'><%=chat[i].login%></strong><img class="status" <%if(chat[i].isOnline) {%> style="display: inline-block" <%}else{%> style="display: none" <%}%> src="static/nav/green.png"><br>
+						<%}%>
+						<p class="msg"><%=chat[i].sms%></p><br>
+						<p class ='date'><%=chat[i].dtt.getHours()%>:<%=chat[i].dtt.getMinutes()%>  <%=chat[i].dtt.getDate()%>.<%=chat[i].dtt.getMonth()%>.<%=chat[i].dtt.getFullYear()%></p>
+					</li>
+				<%}%>
+			</ul>
+		</div>
+		<div id ="mesContainer">
+			<form id='Mesform'>
+				<textarea type='text' id = 'message'></textarea>
+				<button type='submit' id = 'sendMes'>Отправить</button>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript" src ='/socket.io/socket.io.js'></script>
+	<script type="text/javascript">
+/*---------------------------Connetct Socket-----------------------------------*/
+		var socket = io('http://localhost:3000');
+/*---------------------------Connected-----------------------------------------*/
+		socket.emit('Connected', document.getElementById('id').innerText);
+
+
+/*----------------------------Disconnected----------------------------------------*/
+		window.onbeforeunload = function() 
+		{
+    		socket.emit('disconnected', document.getElementById('id').innerText);
+  		}
+// /*----------------------------Scroling-----------------------------------------*/
+		window.scrollTo(0, document.body.scrollHeight);
+		// Данный текст кода мог стать подгрузкой сообщений. Но не стал...
+// 		window.scrollTo(0, document.body.scrollHeight);
+
+// 		window.addEventListener('scroll',function(ev)
+// 			{
+// 				if(document.documentElement.scrollTop == 0)
+// 					{
+// 						var kol = document.getElementsByClassName('msg').length;
+
+// 						var req = new XMLHttpRequest();
+
+// 						req.onreadystatechange = function(){
+// 							if(req.readyState == 4 && req.status == 200)
+// 							{
+// 								var mas = req.response.split('},');
+
+// 								mas[0]=mas[0].replace('{','');
+// 								mas[0]=mas[0].replace('[','');
+// 								for(var j =0; j<mas[0].length; j++)
+// 									if(mas[0][j] == '"')mas[0]=mas[0].replace('"',' ');
+
+// 								mas[0]=mas[0].replace('login','');
+// 								mas[0]=mas[0].replace('path','');
+// 								mas[0]=mas[0].replace('isOnline','');
+// 								mas[0]=mas[0].replace('sms','');
+// 								mas[0]=mas[0].replace('dtt','');
+
+// 								for(var j =0; j<mas[0].length; j++)
+// 									if(mas[0][j] == ':') mas[0]=mas[0].replace(':',' ');
+
+// 								var ans = mas[0].split(',');
+// 								for(j=0;j<ans[0].length;j++)
+// 									if(ans[0][j] == ' ') ans[0] = ans[0].replace(" ",'');
+
+// 								console.log(ans);
+// 							}
+// 						}
+
+// 						req.open('POST','/getBChat');
+// 						req.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+// 						req.send('kol=' + kol);
+// 					}
+// 			});
+/*-----------------------------Send Message------------------------------------*/ 
+		document.querySelector('#sendMes').addEventListener('click', event =>
+			{
+				event.preventDefault();
+				sendMes();
+			});
+
+/*------------------------Function for Send Message-----------------------*/
+	function sendMes()
+	{
+		var name = document.getElementById('id').innerText;
+		var text = document.getElementById('message').value;
+		socket.emit('message',name + '$' + text);
+		document.getElementById('message').value = '';
+	}
+/*---------------------------Get Message---------------------------------------*/
+		socket.on('new message', function(data)
+		{
+			var name = document.getElementById('id').innerText;
+			var img = document.createElement('img');
+			var li = document.createElement('li');
+			var strong = document.createElement('strong');
+			var pmsg = document.createElement('p');
+			var pdate = document.createElement('p');
+			var date = new Date();
+
+			var mas = data.split('$',2);
+			strong.textContent = mas[0];
+			pmsg.textContent = mas[1];
+			pdate.textContent = date.getHours()+':'+date.getMinutes()+'  '+date.getDate()+ '.' +date.getMonth()+ '.' +date.getFullYear();
+			img.src = '/static/photo/'+mas[0] + '.png';
+			if(strong.textContent == name) strong.classList.add('myMsg');
+			strong.classList.add('nameMsg');
+			pmsg.classList.add('msg');
+			pdate.classList.add('date');
+			li.classList.add('msgLi');
+			img.classList.add('icon');
+			img.alt='';
+			li.appendChild(img);
+			li.appendChild(strong);
+			li.appendChild(pmsg);
+			li.appendChild(pdate);
+
+			document.querySelector('#msgContainer').appendChild(li);
+		});
+
+/*------------------------------Get Info--------------------------------------------*/
+		document.querySelector('#msgContainer').addEventListener('click', function(ev)
+			{
+				if(ev.target.getAttribute('class') == 'nameMsg')
+				{
+					var name = ev.target.innerText;
+
+					var req = new XMLHttpRequest();
+
+					req.onreadystatechange = function(){
+						if(req.readyState == 4 && req.status == 200)
+						{
+							if(req.responseText == 'Возникли ошибки на сервере!')
+							{
+								alert('Возникли ошибки на сервере!');
+							}
+							else
+							{
+								var resT = req.responseText;
+								
+								var path = resT.replace('{','');
+								var path = resT.replace('}','');
+
+								path = path.split(':',2);
+
+								path = path[1].replace('"','');
+								path = path.replace('"','');
+
+								document.querySelector('#popName').innerText = name;
+								document.querySelector('.photo').src = path;
+								document.querySelector('#backpop').style.display = 'block';
+							}
+						}
+					}
+
+					req.open('POST','/BigChat');
+					req.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+					req.send('name='+name);
+				}
+				else if(ev.target.getAttribute('class') =='myMsg')
+				{
+					top.location.href = '/MyPage'
+				}
+			});
+/*-----------------------------------to close PopUp--------------------------------*/
+		document.querySelector('#backpop').addEventListener('click', function(ev)
+			{
+				if(event.target.id == 'closePNG')
+				{
+					document.querySelector('#backpop').style.display = 'none';
+				}
+				if(event.target.id != 'popup' && event.target.id == 'backpop')
+				{
+					console.log(event.target.id);
+					document.querySelector('#backpop').style.display = 'none';
+				}
+				if(event.target.id == 'goto')
+				{
+					top.location.href = '/privateChat?name=' + document.querySelector('#popName').innerText;
+				}
+			});
+/*---------------------------------Enter keydown-------------------------------*/
+		document.querySelector('#message').addEventListener('keydown', function(ev)
+		{
+			if(event.key == 'Enter')
+			{
+				sendMes();
+			}
+			
+		})
+/*---------------------------------For Connect And Disconect-----------------------------------*/
+		socket.on('anyone connected', function(data)
+  			{
+  				var mas = document.getElementsByClassName('nameMsg');
+  				var Stats = document.getElementsByClassName('status');
+  				for(var i =0 ;i <mas.length; i++)
+  				{
+					if(mas[i].innerText == data)
+					{
+						Stats[i].style.display = 'inline-block';
+					}
+				}
+  			});
+  		socket.on('anyone disconnected', function(data)
+  			{
+				var mas = document.getElementsByClassName('nameMsg');
+  				var Stats = document.getElementsByClassName('status');
+  				for(var i =0 ;i <mas.length; i++)
+  				{
+					if(mas[i].innerText == data)
+					{
+						Stats[i].style.display = 'none';
+					}
+				}
+  			});
+	</script>
+</body>
+</html>

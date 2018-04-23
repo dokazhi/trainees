@@ -1,0 +1,53 @@
+<!Doctype html>
+
+<html>
+<head>
+	<title><%=user.login%></title>
+	<link rel="stylesheet" type="text/css" href="/static/styles.css">
+</head>
+<body>
+	<header><h1 class='head'>Моя страница</h1></header>
+	<%-partial('./layout/navigationPanel.ejs')%>
+	<div id="id" style="display: none"><%=user.login%></div>
+	<div id="list_wrap" class="list_wrap">
+		<h3 class='MyLogin'><%=user.login%></h3>
+		<img class ='photo' src="<%=user.path%>" />
+		<input class='newPhoto' accept="image/jpeg,image/png,image/gif" type="file" />
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+	<script type="text/javascript" src ='/socket.io/socket.io.js'></script>
+	<script type="text/javascript">
+		document.querySelector(".newPhoto").addEventListener('change', function(ev)
+			{
+				//baseClass это this
+		        var file = document.querySelector('.newPhoto').files[0];
+		        //Создаем объек FormData
+		        var data = new FormData();
+		        //Добавлем туда файл
+		        data.append('uploadFile', file);
+		        //отсылаем с попощью Ajax
+		        $.ajax({
+		            url: '/MyPage',
+		            data: data,
+		            cache: false,
+		            contentType: false,
+		            processData: false,
+		            type: 'POST',
+		            success: function(response) {
+		            	location.reload();
+		            }
+		        });
+			});
+
+
+/*-----------------------------Script FOR Status-----------------------------------------------*/
+			var socket = io('http://localhost:3000');
+			socket.emit('Connected', document.getElementById('id').innerText)
+			window.onbeforeunload = function() 
+				{
+		    		socket.emit('disconnected', document.getElementById('id').innerText);
+		  		};	
+
+	</script>
+</body>
+</html>

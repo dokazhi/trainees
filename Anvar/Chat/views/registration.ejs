@@ -1,0 +1,21 @@
+<!Doctype html>
+
+<html>
+<head>
+	<title>
+		Registration
+	</title>
+	<link rel="stylesheet" type="text/css" href="/static/styles.css">
+</head>
+<body>
+	<div id="wrapper">
+		<h3 id = "title">Выполните вход:</h3>
+		<h4 id="errorMes"><%=msg%></h4>
+		<form id ='RegForm' method="POST" enctype="application/x-www-form-urlencoded" action="/Registration">
+			<input class="inp formEl" type="text" name="Name" id='ilogin' placeholder='Login' autocomplete="off"/ >
+			<input class="inp formEl" type="Password" name="Password" id='ipas' placeholder='Password' autocomplete="off"/>
+			<input class="btn formEl" type="submit" id="reg_btn" value="Submit"/>
+		</form>
+	</div>
+</body>
+</html>

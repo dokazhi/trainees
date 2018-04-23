@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Private Chat | <%=Pname%></title>
+	<link rel="stylesheet" type="text/css" href="static/styles.css">
+</head>
+<body>
+<header><a class="head">Приватный чат | <%=Pname%></a><%if(stat){%><a class = 'statOn st'>онлайн</a><%} else {%> <a class = 'statOff st'>оффлайн</a><%}%></header>
+	<div id="id" style="display: none"><%=name%></div>
+	<div id="Pid" style="display: none"><%=Pname%></div>
+	<%-partial('./layout/navigationPanel.ejs')%>
+	<div id ='chatWrap'>
+		<div>
+			<ul id='msgContainer'>
+				<%for(var i = 0; i < chat.length; i++) {%>
+					<li class = 'msgLi'><img class ='icon' src="<%=chat[i].path%>">
+						<%if(chat[i].login == name){%>
+						<strong class = 'myMsg'><%=name%></strong><br>
+						<%}
+						else{%>
+						<strong class = 'nameMsg'><%=Pname%></strong><br>
+						<%}%>
+						<p class="msg"><%=chat[i].sms%></p><br>
+						<p class ='date'><%=chat[i].dtt.getHours()%>:<%=chat[i].dtt.getMinutes()%>  <%=chat[i].dtt.getDate()%>.<%=chat[i].dtt.getMonth()%>.<%=chat[i].dtt.getFullYear()%></p>
+					</li>
+				<%}%>
+			</ul>
+		</div>
+		<div id ="mesContainer">
+			<form id='Mesform'>
+				<textarea type='text' id = 'message'></textarea>
+<!-- 				<button type='submit' id = 'sendMes'>Отправить</button> -->
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript" src ='/socket.io/socket.io.js'></script>
+	<script type="text/javascript">
+		var socket = io('http://localhost:3000');
+
+		/*---------------------------Connected-----------------------------------------*/
+		socket.emit('Connected', document.getElementById('id').innerText);
+
+
+	/*----------------------------Disconnected----------------------------------------*/
+	    window.onbeforeunload = function() 
+	    {
+	        socket.emit('disconnected', document.getElementById('id').innerText);
+	    }
+/*----------------------------Scroling-----------------------------------------*/
+		window.scrollTo(0, document.body.scrollHeight);
+/*---------------------------------Send Message---------------------------------*/
+		function sendMes()
+		{
+			var name = document.getElementById('id').innerText;
+			var Pname = document.querySelector('#Pid').innerText;
+			var text = document.getElementById('message').value;
+			document.getElementById('message').value = '';
+			socket.emit('private_message',name + '$'+ Pname +'$'+ text);
+		}			
+/*---------------------------------Enter keydown-------------------------------*/
+		document.querySelector('#message').addEventListener('keydown', function(ev)
+		{
+			if(event.key == 'Enter' && document.getElementById('message').value!='')
+			{
+				sendMes();
+			}
+			
+		})
+/*---------------------------Get Message---------------------------------------*/
+
+		socket.on('new private_message', function(data)
+		{
+			var name = document.getElementById('id').innerText;
+
+			var img = document.createElement('img');
+			var li = document.createElement('li');
+			var strong = document.createElement('strong');
+			var pmsg = document.createElement('p');
+			var pdate = document.createElement('p');
+			var date = new Date();
+
+			var mas = data.split('$',3);
+			img.src = '/static/photo/'+mas[0] + '.png';
+			if(mas[0] == name) strong.textContent = name;
+			else strong.textContent = mas[0];
+			pmsg.textContent = mas[2];
+
+			pdate.textContent = date.getHours()+':'+date.getMinutes()+'  '+date.getDate()+ '.' +date.getMonth()+ '.' +date.getFullYear();
+
+			if(strong.textContent == name) strong.classList.add('myMsg');
+			else strong.classList.add('nameMsg');
+
+			img.classList.add('icon');
+			pmsg.classList.add('msg');
+			pdate.classList.add('date');
+			li.classList.add('msgLi');
+			img.alt='';
+			li.appendChild(img);
+			li.appendChild(strong);
+			li.appendChild(pmsg);
+			li.appendChild(pdate);
+
+			document.querySelector('#msgContainer').appendChild(li);
+		});
+/*---------------------Sockets For Status------------------------------------------*/
+  		socket.on('anyone connected', function(data)
+  			{
+				if(document.getElementById('Pid').innerText == data)
+				{
+					document.querySelector('.st').innerText = 'онлайн';
+					document.querySelector('.st').classList.remove('statOff');
+					document.querySelector('.st').classList.add('statOn');
+					console.log('nen');
+				}
+  			});
+  		socket.on('anyone disconnected', function(data)
+  			{
+				if(document.getElementById('Pid').innerText == data)
+				{
+					document.querySelector('.st').classList.add('statOff');
+					document.querySelector('.st').classList.remove('statOn');
+					document.querySelector('.st').innerText = 'оффлайн';
+				}
+  			});
+ /*-----------------------Goto My Profile-----------------------------*/
+ 		document.querySelector('#msgContainer').addEventListener('click', (ev)=>
+ 		{
+ 			if(ev.target.getAttribute('class') == 'myMsg')
+ 			{
+ 				top.location.href ='/MyPage';
+ 			}
+ 		});
+	</script>
+</body>
+</html>
+

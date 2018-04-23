@@ -1,0 +1,76 @@
+<!Doctype html>
+
+<html>
+<head>
+	<title>
+		MyList | <%=name%>
+	</title>
+	<link rel="stylesheet" type="text/css" href="/static/styles.css">
+</head>
+<header><h1 class="head">Список участников</h1></header>
+<body>
+	<%-partial('./layout/navigationPanel.ejs')%>
+  <div id="id" style="display: none"><%=name%></div>
+	<div id="list_wrap" class="list_wrap">
+		<table>
+		<%for(var i = 0; i < mas.length;i++) if(mas[i].login != name) if(mas[i].login != 'Admin'){%>
+				<tr>
+					<td><img class = 'ListPhoto' src='<%=mas[i].path%>'/></td>
+					<td><h2 class = 'logins'><%=mas[i].login%></h2></td>
+					<td><a class='pwrite' href="privateChat?name=<%=mas[i].login%>">написать</a></td>
+					<td><%if(mas[i].isOnline){%><a class = 'statOn st'>онлайн</a><%} else {%> <a class = 'statOff st'>оффлайн</a><%}%></td>
+				</tr>
+		<%}%>
+		</table>
+	</div>
+	<script type="text/javascript" src ='/socket.io/socket.io.js'></script>
+	<script type="text/javascript">
+		var socket = io('http://localhost:3000');
+
+    /*---------------------------Connected-----------------------------------------*/
+    socket.emit('Connected', document.getElementById('id').innerText);
+
+
+/*----------------------------Disconnected----------------------------------------*/
+    window.onbeforeunload = function() 
+    {
+        socket.emit('disconnected', document.getElementById('id').innerText);
+    }
+
+
+		window.onbeforeunload = function() 
+		{
+    		socket.emit('disconnected', document.getElementById('id').innerText);
+  	}
+
+  		socket.on('anyone connected', function(data)
+  			{
+  				var mas = document.getElementsByClassName('logins');
+  				var statMas = document.getElementsByClassName('st');
+  				for(var i = 0; i<mas.length; i++ )
+  				{
+  					if(mas[i].innerText == data)
+  					{
+  						statMas[i].classList.remove('statOff');
+  						statMas[i].classList.add('statOn');
+  						statMas[i].innerText = 'онлайн';
+  					}
+  				}
+  			});
+  		socket.on('anyone disconnected', function(data)
+  			{
+  				var mas = document.getElementsByClassName('logins');
+  				var statMas = document.getElementsByClassName('st');
+  				for(var i = 0; i<mas.length; i++ )
+  				{
+  					if(mas[i].innerText == data)
+  					{
+  						statMas[i].classList.add('statOff');
+  						statMas[i].classList.remove('statOn');
+  						statMas[i].innerText = 'оффлайн';
+  					}
+  				}
+  			});
+	</script>
+</body>
+</html>

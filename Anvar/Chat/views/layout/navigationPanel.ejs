@@ -1,0 +1,42 @@
+<!Doctype html>
+
+<div id = 'nav' class = 'nav'>
+	<img id = 'linkUp' class="navIm"  src="static/nav/up.jpg" />
+	<img id = 'linktoMe' class="navIm" src="static/nav/user.png">
+	<img id = 'linktoBch' class ='navIm' src="static/nav/Bchat.jpg" />
+	<img id = 'linktoL' class="navIm" src="static/nav/list.png" />
+	<img id = 'linktoEx' class="navIm" src="static/nav/exit.jpg" />
+	<img id = 'linkDown' class="navIm"  src="static/nav/down.jpg" />
+</div>
+
+<script type="text/javascript">
+	
+	document.getElementById('nav').addEventListener('click', (event) =>
+	{
+		if(event.target.id == 'linktoBch')
+		{
+			top.location.href = '/BigChat';
+		}
+		else if(event.target.id == 'linktoMe')
+		{
+			top.location.href = '/MyPage';
+		}
+		else if(event.target.id == 'linkUp')
+		{
+			window.scrollTo(0, 0);
+		}
+		else if(event.target.id == 'linkDown')
+		{
+			window.scrollTo(0, document.body.scrollHeight);
+		}
+		else if(event.target.id == 'linktoL')
+		{
+			top.location.href = '/List';
+		}
+		else if(event.target.id == 'linktoEx')
+		{
+			top.location.href = '/Registration';
+		}
+	})
+
+</script>
