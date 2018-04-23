@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Registration</title>
+</head>
+<body>
+
+<h1>Registration</h1>
+
+<input id="username"         type="text"     name="username"            placeholder="username"            required><br>
+<input id="password"         type="password" name="password"            placeholder="password"            required><br>
+<input id="confirmPassword"     type="password" name="confirmPassword"     placeholder="confirm password"    required><br>
+
+
+
+<button type="button" id="myForm" onclick="sendAjax()">OK</button>
+<form action="/login" method="GET">
+    <button type="submit">LOG IN</button>
+</form>
+
+
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+<script>
+    const regExp = /^[a-zA-Z1-9]+$/;
+
+    const checkValidation = (...args) => args.every(item => regExp.test(item));
+
+    const sendAjax = () =>{
+
+        const username = document.getElementById("username").value;
+        const password  = document.getElementById("password").value;
+        const confPassword  = document.getElementById("confirmPassword").value;
+
+
+        if(password !== confPassword){
+            alert("password are not match ")
+            return;
+        }
+
+        if(checkValidation(username, password)){
+
+
+            $.ajax({
+                type: 'POST',
+                url: '/registration',
+                data: {},
+                contentType: "application/x-www-form-urlencoded",
+                statusCode: {
+                    200: () => {
+                        alert("Успешная регистрация")
+                        window.location.replace("/context");
+                    },
+                    400: () => {
+                        alert("Что то пошло не так")
+                    }
+                }
+            });
+
+        }else{
+            alert("WROOONG");
+        }
+
+    }
+
+
+
+</script>
+</body>
+</html>
